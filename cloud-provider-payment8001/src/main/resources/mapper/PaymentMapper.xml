@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.lpc.springcloud.dao.PaymentDao">
+
+    <resultMap id="BaseResultMap" type="com.lpc.springcloud.entities.Payment">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="serial" property="serial" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="selectPaymentVo">
+        SELECT id, serial FROM `payment`
+    </sql>
+
+    <insert id="create" parameterType="Payment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `payment`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serial != null">serial,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serial != null">#{serial},</if>
+        </trim>
+    </insert>
+
+    <select id="getPaymentById" parameterType="Long" resultMap="BaseResultMap">
+        <include refid="selectPaymentVo"/>
+        WHERE id = #{id}
+    </select>
+
+</mapper>
